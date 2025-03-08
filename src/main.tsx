@@ -11,6 +11,7 @@ import Login from "./components/userAuth/Login.tsx";
 import Register from "./components/userAuth/Register.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Feed from "./components/feed/Feed.tsx";
+import Search from "./components/search/Search.tsx";
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Feed />,
+            },
+            {
+                path: "/search",
+                element: <Search />,
             },
         ],
     },
