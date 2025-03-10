@@ -1,18 +1,17 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "./components/css/global.css";
-
+import Feed from "./components/feed/Feed.tsx";
 import Login from "./components/userAuth/Login.tsx";
 import Register from "./components/userAuth/Register.tsx";
-import Navbar from "./components/Navbar.tsx";
-import Feed from "./components/feed/Feed.tsx";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import EditProfile from "./components/profile/EditProfile.tsx";
 import Search from "./components/search/Search.tsx";
-
+import Navbar from "./components/Navbar.tsx";
+import React from "react";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Feed />,
+            },
+            {
+                path: "/profile",
+                element: <EditProfile />,
             },
             {
                 path: "/search",
