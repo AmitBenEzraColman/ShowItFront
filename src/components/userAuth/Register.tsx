@@ -6,6 +6,9 @@ import z from "zod";
 import FormInput, { FormInputProps } from "../form/FormInput";
 import { User, googleSignin, register } from "../../services/user-service";
 import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
+import {uploadPhoto} from "../../services/file-service.ts";
+import FormInputImage from "../form/FormInputFile.tsx";
+import profilePicPlaceholder from "/src/images/profile_pic_placeholder.png";
 
 const schema = z
     .object({
@@ -22,7 +25,9 @@ const schema = z
         confirmPassword: z
             .string()
             .min(5, "Password must contain at least 5 characters"),
-    })
+        profilePicture: z.any().refine((val) => {
+            return val.length > 0;
+        }, "Profile picture is required"),    })
     .refine(
         (values) => {
             return values.password === values.confirmPassword;
@@ -75,11 +80,14 @@ const Register: React.FC = () => {
                                 fullName,
                                 email,
                                 password,
+                                profilePicture
                             }: FormData) => {
+        const imgUrl = await    uploadPhoto(profilePicture[0]);
         const user: User = {
             fullName,
             email,
             password,
+            imgUrl
         };
 
         await register(user);
@@ -121,6 +129,11 @@ const Register: React.FC = () => {
                         <FormProvider {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit, onErrorSubmit)}>
                                 <div className="text-center mb-4">
+                                    <FormInputImage
+                                        name={"profilePicture"}
+                                        label={"Profile Picture"}
+                                        defaultImage={profilePicPlaceholder}
+                                    />
                                 </div>
 
                                 {inputFields.map((field) => (
