@@ -14,7 +14,7 @@ const MyReviews: React.FC = () => {
       const reviews = await getConnectedUserReviews();
       setReviews(reviews);
     } catch (error) {
-      console.error("Error fetching comments:", error);
+      console.error("Error fetching reviews:", error);
     }
   };
 
@@ -22,21 +22,26 @@ const MyReviews: React.FC = () => {
     fetchReviews();
   }, []);
 
-  const handledeleteReview = async (reviewId: string) => {
+  const handleDeleteReview = async (reviewId: string) => {
     await deleteReview(reviewId);
     fetchReviews();
   };
 
   return (
-    <>
-      {reviews.map((review) => (
-        <MyReviewCard
-          key={review.id}
-          {...review}
-          deleteReview={handledeleteReview}
-        />
-      ))}
-    </>
+      <div className="container mt-4">
+        <h2 className="text-center mb-4">My Reviews</h2>
+        {reviews.length === 0 ? (
+            <p className="text-center">You haven't written any reviews yet.</p>
+        ) : (
+            reviews.map((review) => (
+                <MyReviewCard
+                    key={review.id}
+                    {...review}
+                    deleteReview={handleDeleteReview}
+                />
+            ))
+        )}
+      </div>
   );
 };
 

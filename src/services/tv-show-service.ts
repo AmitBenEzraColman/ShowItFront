@@ -15,9 +15,9 @@ export const searchTvShow = (searchTerm: string) => {
             .get(`/tvshows/search/${searchTerm}`)
             .then((response) => {
                 const tvshows = (response.data as TvShow[])
-                    .filter((tvShow: TvShow) => tvShow.popularity > 30)
+                    .filter((tvShow: TvShow) => tvShow.popularity > 5)
                     .sort((a, b) => b.popularity - a.popularity);
-
+                console.log(tvshows)
                 resolve(tvshows);
             })
             .catch((error) => {

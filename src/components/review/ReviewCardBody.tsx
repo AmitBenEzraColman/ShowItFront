@@ -1,41 +1,38 @@
 import React from "react";
 
 interface ReviewCardBodyProps {
-  reviewImgUrl: string;
-  tvShowTitle: string;
-  score: number;
-  description: string;
+    reviewImgUrl: string;
+    tvShowTitle: string;
+    score: number;
+    description: string;
 }
 
 const ReviewCardBody: React.FC<ReviewCardBodyProps> = ({
-  description,
-  tvShowTitle,
-  reviewImgUrl,
-  score,
-}) => {
-  return (
-    <div>
-      <img
-        src={reviewImgUrl}
-        className="card-img-top mt-2"
-        height="200"
-        style={{ backgroundColor: "#e3f2fd" }}
-      />
-      <div className="card-body ps-0">
-        <p className="h5 my-0">TV Show Title: {tvShowTitle}</p>
-        <span className="fw-bold me-2">Score:</span>
-        {Array.from({ length: score }, (_) => (
-          <i className="bi bi-star-fill me-1" style={{ color: "#ecc94b" }} />
-        ))}
-
-        {Array.from({ length: 5 - score }, (_) => (
-          <i className="bi bi-star me-1" style={{ color: "#ecc94b" }} />
-        ))}
-
-        <p className="card-text mt-2 multiline">{description}</p>
-      </div>
-    </div>
-  );
+                                                           description,
+                                                           tvShowTitle,
+                                                           reviewImgUrl,
+                                                           score,
+                                                       }) => {
+    return (
+        <div className="card-body">
+            <img
+                src={reviewImgUrl}
+                className="card-img-top mb-3 rounded"
+                alt={tvShowTitle}
+                style={{ objectFit: "cover", height: "200px" }}
+            />
+            <h5 className="card-title">{tvShowTitle}</h5>
+            <div className="mb-2">
+                {Array.from({ length: 5 }, (_, i) => (
+                    <i
+                        key={i}
+                        className={`bi ${i < score ? "bi-star-fill" : "bi-star"} text-warning`}
+                    />
+                ))}
+            </div>
+            <p className="card-text">{description}</p>
+        </div>
+    );
 };
 
 export default ReviewCardBody;

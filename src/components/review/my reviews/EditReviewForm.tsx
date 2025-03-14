@@ -37,28 +37,10 @@ const inputFields: FormInputProps[] = [
   },
 ];
 
-const NewReviewForm: React.FC = () => {
+const EditReviewForm: React.FC = () => {
   const navigate = useNavigate();
   const { reviewId } = useParams();
-  if (!reviewId) {
-    navigate("/myreviews");
-  }
-
   const [review, setReview] = useState<Review | null>(null);
-
-  useEffect(() => {
-    const fetchReview = async () => {
-      try {
-        const review = await getReviewById(reviewId!);
-        setReview(review);
-        form.reset(review);
-      } catch (error) {
-        navigate("/");
-      }
-    };
-    fetchReview();
-  }, []);
-
   const [shake, setShake] = useState(false);
 
   const form = useForm<FormData>({
@@ -66,25 +48,42 @@ const NewReviewForm: React.FC = () => {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    const fetchReview = async () => {
+      try {
+        if (reviewId) {
+          const review = await getReviewById(reviewId);
+          setReview(review);
+          form.reset(review);
+        } else {
+          navigate("/myreviews");
+        }
+      } catch (error) {
+        navigate("/");
+      }
+    };
+    fetchReview();
+  }, []);
+
   const onSubmit = async ({ description, score, reviewPicture }: FormData) => {
     if (
-      description !== review?.description ||
-      score !== review?.score ||
-      reviewPicture.length !== 0
+        description !== review?.description ||
+        score !== review?.score ||
+        reviewPicture.length !== 0
     ) {
       const imgUrl =
-        reviewPicture.length !== 0
-          ? await uploadPhoto(reviewPicture[0])
-          : review?.reviewImgUrl!;
+          reviewPicture.length !== 0
+              ? await uploadPhoto(reviewPicture[0])
+              : review?.reviewImgUrl!;
 
-      const user: ReviewSubmition = {
+      const updatedReview: ReviewSubmition = {
         tvShowTitle: review!.tvShowTitle,
         description,
         score,
         reviewImgUrl: imgUrl,
       };
 
-      await editReview(reviewId!, user);
+      await editReview(reviewId!, updatedReview);
     }
     navigate("/myreviews");
   };
@@ -94,58 +93,41 @@ const NewReviewForm: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="d-flex align-items-center justify-content-center py-2">
-        <div
-          className={`border border-2 p-4 rounded ${shake && "shake"}`}
-          onAnimationEnd={() => setShake(false)}
-          style={{
-            width: "35rem",
-          }}
-        >
-          <div className="text-center">
-            <p className="h2">Add Review</p>
-            <p className="h5 my-2 text-muted">{review?.tvShowTitle}</p>
-          </div>
-
-          <div
-            className="overflow-auto"
-            style={{
-              maxHeight: "calc(100vh - 11rem)",
-            }}
-          >
-            <FormProvider {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit, onErrorSubmit)}>
-                <FormInputImage
-                  name={"reviewPicture"}
-                  label={"Review Picture"}
-                  fullWidth
-                  defaultImage={review?.reviewImgUrl || ""}
-                />
-                {inputFields.map((field) =>
-                  field.type === "textArea" ? (
-                    <FormTextArea
-                      key={field.name}
-                      {...field}
-                      showValidFeedback
+      <div className="container mt-5">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className={`card shadow ${shake ? "shake" : ""}`} onAnimationEnd={() => setShake(false)}>
+              <div className="card-body">
+                <h2 className="card-title text-center mb-4">Edit Review</h2>
+                <h5 className="text-center text-muted mb-4">{review?.tvShowTitle}</h5>
+                <FormProvider {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit, onErrorSubmit)}>
+                    <FormInputImage
+                        name="reviewPicture"
+                        label="Review Picture"
+                        fullWidth
+                        defaultImage={review?.reviewImgUrl || ""}
                     />
-                  ) : (
-                    <FormInput key={field.name} {...field} showValidFeedback />
-                  )
-                )}
-
-                <div className="text-center mt-4">
-                  <button type="submit" className="btn btn-dark w-100 mx-auto">
-                    Upload
-                  </button>
-                </div>
-              </form>
-            </FormProvider>
+                    {inputFields.map((field) =>
+                        field.type === "textArea" ? (
+                            <FormTextArea key={field.name} {...field} showValidFeedback />
+                        ) : (
+                            <FormInput key={field.name} {...field} showValidFeedback />
+                        )
+                    )}
+                    <div className="text-center mt-4">
+                      <button type="submit" className="btn btn-primary btn-lg">
+                        Update Review
+                      </button>
+                    </div>
+                  </form>
+                </FormProvider>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </>
   );
 };
 
-export default NewReviewForm;
+export default EditReviewForm;

@@ -5,17 +5,18 @@ import UserAndTimestampCardHeader from "../UserAndTimestampCardHeader";
 interface CommentCardProps extends Comment {}
 
 const CommentCard: React.FC<CommentCardProps> = ({
-  timeStamp,
-  description,
-  author,
-}) => {
-  console.log(author);
-  return (
-    <div className="w-50 mx-auto p-3 card border mb-3">
-      <UserAndTimestampCardHeader author={author} timeStamp={timeStamp} />
-      <p className="card-text card-body mb-0 pb-0 multiline">{description}</p>
-    </div>
-  );
+                                                     timeStamp,
+                                                     description,
+                                                     author,
+                                                 }) => {
+    return (
+        <div className="card shadow-sm mb-3">
+            <div className="card-body">
+                <UserAndTimestampCardHeader author={author} timeStamp={timeStamp} />
+                <p className="card-text mt-2">{description}</p>
+            </div>
+        </div>
+    );
 };
 
 export default CommentCard;

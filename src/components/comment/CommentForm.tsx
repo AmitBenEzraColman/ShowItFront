@@ -7,9 +7,9 @@ interface CommentFormProps {
 }
 
 const CommentForm: React.FC<CommentFormProps> = ({
-  reviewId,
-  postCommentCallback,
-}) => {
+                                                   reviewId,
+                                                   postCommentCallback,
+                                                 }) => {
   const commentContent = useRef<HTMLTextAreaElement>(null);
 
   const handleCommentSubmit = async () => {
@@ -28,20 +28,19 @@ const CommentForm: React.FC<CommentFormProps> = ({
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center">
-      <div className="col-4">
+      <div className="card shadow-sm mb-4">
+        <div className="card-body">
         <textarea
-          className="form-control border-dark"
-          ref={commentContent}
-          placeholder="Enter your comment..."
+            className="form-control mb-3"
+            ref={commentContent}
+            placeholder="Enter your comment..."
+            rows={3}
         />
+          <button className="btn btn-primary" onClick={handleCommentSubmit}>
+            Post Comment
+          </button>
+        </div>
       </div>
-      <div className="ms-2">
-        <button className="btn btn-outline-dark" onClick={handleCommentSubmit}>
-          Post
-        </button>
-      </div>
-    </div>
   );
 };
 
