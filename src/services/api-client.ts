@@ -2,8 +2,9 @@ import axios, { CanceledError } from "axios";
 
 export { CanceledError };
 
-// TODO: insert -> if production => base url: colman server
-const baseURL = "http://localhost:3000";
+const baseURL = import.meta.env.PROD
+    ? "https://10.10.246.126"
+    : "http://localhost:3000";
 
 const refreshCacheApiClient = axios.create({
     baseURL: baseURL,
