@@ -1,5 +1,4 @@
 import axios, { CanceledError } from "axios";
-import {useNavigate} from "react-router-dom";
 
 export { CanceledError };
 const baseURL = "https://10.10.246.126"
@@ -30,7 +29,7 @@ apiClient.interceptors.response.use(
                 await refreshCacheApiClient.get("/auth/refresh");
                 return await axios(originalRequest);
             } catch (error) {
-                window.location.href = "/login";
+                window.location.href = "/";
                 console.log("Error: ", error);
             }
         }
