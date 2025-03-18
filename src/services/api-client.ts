@@ -1,7 +1,7 @@
 import axios, { CanceledError } from "axios";
 
 export { CanceledError };
-const baseURL = "https://10.10.246.126"
+const baseURL = "https://node126.cs.colman.ac.il"
 
 const refreshCacheApiClient = axios.create({
     baseURL: baseURL,
