@@ -92,15 +92,6 @@ const Login: React.FC = () => {
                                 <FormInput key={field.name} {...field} />
                             ))}
 
-                            <div className="mb-3 d-flex justify-content-between align-items-center">
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" id="rememberMe" />
-                                    <label className="form-check-label small" htmlFor="rememberMe">
-                                        Remember me
-                                    </label>
-                                </div>
-                                <a href="/forgot-password" className="small text-decoration-none">Forgot password?</a>
-                            </div>
 
                             {submittedUnauthorized && (
                                 <div className="alert alert-danger py-2 text-center" role="alert">

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
-import FormInput, { FormInputProps } from "../form/FormInput";
+import FormInput from "../form/FormInput";
 import { uploadPhoto } from "../../services/file-service";
 import { User, getMyUserData, update } from "../../services/user-service";
 import FormInputImage from "../form/FormInputFile";
@@ -11,19 +11,16 @@ import FormInputImage from "../form/FormInputFile";
 const schema = z.object({
     fullName: z
         .string()
-        .regex(
-            /^[a-zA-Z]{2,}(?: [a-zA-Z]{2,}){1,3}$/,
-            "Please provide a vaild full name"
-        )
+        .regex(/^[a-zA-Z]{2,}(?: [a-zA-Z]{2,}){1,3}$/, "Please provide a valid full name")
         .min(1, "Full Name must not be empty")
-        .max(20, "Full Name must be less then 30 charecters"),
+        .max(30, "Full Name must be less than 30 characters"),
     email: z.string().email("Email is invalid"),
     profilePicture: z.any(),
 });
 
 type FormData = z.infer<typeof schema>;
 
-const inputFields: FormInputProps[] = [
+const inputFields = [
     {
         name: "fullName",
         label: "Full Name",
@@ -33,15 +30,13 @@ const inputFields: FormInputProps[] = [
     {
         name: "email",
         label: "Email",
-        type: "text",
+        type: "email",
         placeholder: "a@example.com",
     },
 ];
 
 const EditProfile: React.FC = () => {
     const navigate = useNavigate();
-
-    const [shake, setShake] = useState(false);
     const [originalUser, setOriginalUser] = useState<User | null>(null);
 
     const form = useForm<FormData>({
@@ -52,7 +47,6 @@ const EditProfile: React.FC = () => {
     useEffect(() => {
         const fetchUser = async () => {
             const user = await getMyUserData();
-            console.log(user);
             setOriginalUser(user);
             form.reset(user);
         };
@@ -60,8 +54,6 @@ const EditProfile: React.FC = () => {
     }, []);
 
     const onSubmit = async ({ fullName, email, profilePicture }: FormData) => {
-        console.log("submit");
-
         if (
             fullName !== originalUser?.fullName ||
             email !== originalUser?.email ||
@@ -72,62 +64,38 @@ const EditProfile: React.FC = () => {
                     ? await uploadPhoto(profilePicture[0])
                     : originalUser?.imgUrl;
 
-            const user: User = {
-                fullName,
-                email,
-                imgUrl,
-            };
-
+            const user: User = { fullName, email, imgUrl };
             await update(user);
         }
         navigate("/");
     };
 
-    const onErrorSubmit = () => {
-        console.log("error");
-        setShake(true);
-    };
-
     return (
-        <div className="d-flex align-items-center justify-content-center py-2">
-            <div
-                className={`border border-2 p-4 rounded ${shake && "shake"}`}
-                onAnimationEnd={() => setShake(false)}
-                style={{
-                    width: "35rem",
-                }}
-            >
-                <div className="text-center">
-                    <h1>Edit My Profile</h1>
-                    <p className="text-muted mt-3">
-                        Please edit your information below in order to update your profile
-                    </p>
-                </div>
-
-                <div
-                    className="overflow-auto"
-                    style={{
-                        maxHeight: "calc(100vh - 11rem)",
-                    }}
-                >
-                    <FormProvider {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit, onErrorSubmit)}>
-                            <FormInputImage
-                                name={"profilePicture"}
-                                label={"Profile Picture"}
-                                defaultImage={originalUser?.imgUrl || ""}
-                            />
-                            {inputFields.map((field) => (
-                                <FormInput key={field.name} {...field} />
-                            ))}
-
-                            <div className="text-center mt-4">
-                                <button type="submit" className="btn btn-dark w-100 mx-auto">
-                                    Update Profile
-                                </button>
-                            </div>
-                        </form>
-                    </FormProvider>
+        <div className="container py-5">
+            <div className="row justify-content-center">
+                <div className="col-md-8 col-lg-6">
+                    <div className="card shadow">
+                        <div className="card-body">
+                            <h2 className="card-title text-center mb-4">Edit My Profile</h2>
+                            <FormProvider {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)}>
+                                    <FormInputImage
+                                        name="profilePicture"
+                                        label="Profile Picture"
+                                        defaultImage={originalUser?.imgUrl || ""}
+                                    />
+                                    {inputFields.map((field) => (
+                                        <FormInput key={field.name} {...field} />
+                                    ))}
+                                    <div className="d-grid gap-2 mt-4">
+                                        <button type="submit" className="btn btn-primary">
+                                            Update Profile
+                                        </button>
+                                    </div>
+                                </form>
+                            </FormProvider>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -55,17 +55,20 @@ const Feed: React.FC = () => {
   };
 
   return (
-    <>
-      {reviews.map((review) => (
-        <ReviewCard
-          key={review.id}
-          {...review}
-          showLikesAndComments={true}
-          likeReview={() => handleReviewLike(review.id)}
-          unlikeReview={() => handleReviewUnlike(review.id)}
-        />
-      ))}
-    </>
+      <div className="container mt-4">
+        <div className="row">
+          {reviews.map((review) => (
+              <div className="col-md-6 col-lg-4 mb-4" key={review.id}>
+                <ReviewCard
+                    {...review}
+                    showLikesAndComments={true}
+                    likeReview={() => handleReviewLike(review.id)}
+                    unlikeReview={() => handleReviewUnlike(review.id)}
+                />
+              </div>
+          ))}
+        </div>
+      </div>
   );
 };
 

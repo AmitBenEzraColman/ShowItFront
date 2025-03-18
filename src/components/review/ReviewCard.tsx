@@ -13,20 +13,20 @@ interface ReviewCardProps extends Review {
 }
 
 const ReviewCard: React.FC<ReviewCardProps> = ({
-  id,
-  tvShowTitle,
-  description,
-  score,
-  reviewImgUrl,
-  timeStamp,
-  author,
-  likes,
-  comments,
-  isLiked,
-  showLikesAndComments,
-  likeReview,
-  unlikeReview,
-}) => {
+                                                 id,
+                                                 tvShowTitle,
+                                                 description,
+                                                 score,
+                                                 reviewImgUrl,
+                                                 timeStamp,
+                                                 author,
+                                                 likes,
+                                                 comments,
+                                                 isLiked,
+                                                 showLikesAndComments,
+                                                 likeReview,
+                                                 unlikeReview,
+                                               }) => {
   const navigate = useNavigate();
 
   const handleCommentClick = () => {
@@ -38,24 +38,24 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
   };
 
   return (
-    <div className="card w-50 mx-auto my-3 px-4 py-3">
-      <UserAndTimestampCardHeader author={author} timeStamp={timeStamp} />
-      <ReviewCardBody
-        description={description}
-        tvShowTitle={tvShowTitle}
-        reviewImgUrl={reviewImgUrl}
-        score={score}
-      />
-      {showLikesAndComments && (
-        <LikeAndCommentReview
-          isLiked={isLiked}
-          handleLikeClick={handleLikeClick}
-          likesCount={likes}
-          handleCommentClick={handleCommentClick}
-          commentsCount={comments?.length}
+      <div className="card shadow-sm h-100">
+        <UserAndTimestampCardHeader author={author} timeStamp={timeStamp} />
+        <ReviewCardBody
+            description={description}
+            tvShowTitle={tvShowTitle}
+            reviewImgUrl={reviewImgUrl}
+            score={score}
         />
-      )}
-    </div>
+        {showLikesAndComments && (
+            <LikeAndCommentReview
+                isLiked={isLiked}
+                handleLikeClick={handleLikeClick}
+                likesCount={likes}
+                handleCommentClick={handleCommentClick}
+                commentsCount={comments?.length}
+            />
+        )}
+      </div>
   );
 };
 

@@ -15,9 +15,9 @@ export const searchTvShow = (searchTerm: string) => {
             .get(`/tvshows/search/${searchTerm}`)
             .then((response) => {
                 const tvshows = (response.data as TvShow[])
-                    .filter((tvShow: TvShow) => tvShow.popularity > 30)
+                    .filter((tvShow: TvShow) => tvShow.popularity > 1)
                     .sort((a, b) => b.popularity - a.popularity);
-
+                console.log(tvshows)
                 resolve(tvshows);
             })
             .catch((error) => {
@@ -32,6 +32,20 @@ export const getTvShowById = (tvShowId: number) => {
             .get(`/tvshows/${tvShowId}`)
             .then((response) => {
                 resolve(response.data as TvShow);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+};
+
+export const getSuggestionsByTitle = (title: string) => {
+    const encodedTitle = encodeURIComponent(title);
+    return new Promise<string>((resolve, reject) => {
+        apiClient
+            .get(`/gemini?tvShowTitle=${encodedTitle}`)
+            .then((response) => {
+                resolve(response.data);
             })
             .catch((error) => {
                 reject(error);
