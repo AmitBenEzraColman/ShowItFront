@@ -31,7 +31,7 @@ apiClient.interceptors.response.use(
                 await refreshCacheApiClient.get("/auth/refresh");
                 return await axios(originalRequest);
             } catch (error) {
-                navigate("/login");
+                navigate("/");
                 console.log("Error: ", error);
             }
         }
