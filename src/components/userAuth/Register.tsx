@@ -115,9 +115,10 @@ const Register: React.FC = () => {
                 onAnimationEnd={() => setShake(false)}
                 style={{
                     maxWidth: "35rem",
+                    width: "35rem"
                 }}
             >
-                <div className="card-body p-4 p-md-5">
+                <div className="card-body">
                     <div className="text-center mb-4">
                         <h2 className="fw-bold mb-2">Create Account</h2>
                         <p className="text-muted">
